@@ -48,6 +48,12 @@ abstract class EventLoggerTestCase extends LunrBaseTestCase
     protected array $defaultTags = [ 'foo' => 'bar' ];
 
     /**
+     * Default fields
+     * @var array<string, scalar>
+     */
+    protected array $defaultFields = [ 'baz' => 'qux' ];
+
+    /**
      * Testcase Constructor.
      *
      * @return void
@@ -61,7 +67,7 @@ abstract class EventLoggerTestCase extends LunrBaseTestCase
         $this->logger = $this->getMockBuilder(LoggerInterface::class)
                              ->getMock();
 
-        $this->class = new EventLogger($this->client, $this->logger, $this->defaultTags);
+        $this->class = new EventLogger($this->client, $this->logger, $this->defaultTags, $this->defaultFields);
 
         parent::baseSetUp($this->class);
     }

@@ -53,17 +53,25 @@ class EventLogger implements EventLoggerInterface
     protected readonly array $defaultTags;
 
     /**
+     * Default fields to use for all events.
+     * @var array<string,scalar>
+     */
+    protected readonly array $defaultFields;
+
+    /**
      * Constructor.
      *
-     * @param Client               $client      Instance of the InfluxDB Client class
-     * @param LoggerInterface      $logger      Instance of a PSR-3 Logger
-     * @param array<string,string> $defaultTags Default tags to use for all events
+     * @param Client               $client        Instance of the InfluxDB Client class
+     * @param LoggerInterface      $logger        Instance of a PSR-3 Logger
+     * @param array<string,string> $defaultTags   Default tags to use for all events
+     * @param array<string,scalar> $defaultFields Default fields to use for all events
      */
-    public function __construct(Client $client, LoggerInterface $logger, array $defaultTags = [])
+    public function __construct(Client $client, LoggerInterface $logger, array $defaultTags = [], array $defaultFields = [])
     {
-        $this->client      = $client;
-        $this->logger      = $logger;
-        $this->defaultTags = $defaultTags;
+        $this->client        = $client;
+        $this->logger        = $logger;
+        $this->defaultTags   = $defaultTags;
+        $this->defaultFields = $defaultFields;
     }
 
     /**
@@ -88,6 +96,7 @@ class EventLogger implements EventLoggerInterface
             new Point(
                 measurement: $name,
                 tags: $this->defaultTags,
+                additionalFields: $this->defaultFields,
             ),
         );
     }

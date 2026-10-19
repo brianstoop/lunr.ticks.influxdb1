@@ -10,6 +10,8 @@
 namespace Lunr\Ticks\InfluxDB1\EventLogging\Tests;
 
 use Lunr\Halo\PropertyTraits\PsrLoggerTestTrait;
+use Lunr\Ticks\InfluxDB1\EventLogging\EventLogger;
+use ReflectionProperty;
 
 /**
  * This class contains tests for the EventLogger class.
@@ -35,6 +37,26 @@ class EventLoggerBaseTest extends EventLoggerTestCase
     public function testDefaultTagsArePassedCorrectly(): void
     {
         $this->assertPropertySame('defaultTags', $this->defaultTags);
+    }
+
+    /**
+     * Test that the default fields are passed correctly.
+     */
+    public function testDefaultFieldsArePassedCorrectly(): void
+    {
+        $this->assertPropertySame('defaultFields', $this->defaultFields);
+    }
+
+    /**
+     * Test that the default fields are empty if not passed.
+     */
+    public function testDefaultFieldsAreEmptyByDefault(): void
+    {
+        $class = new EventLogger($this->client, $this->logger);
+
+        $property = new ReflectionProperty(EventLogger::class, 'defaultFields');
+
+        $this->assertSame([], $property->getValue($class));
     }
 
     /**
